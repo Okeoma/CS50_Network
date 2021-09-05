@@ -1,0 +1,40 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+{% include "network/profile_picture.html" %}
+<center><strong class="all_posts">Following</strong></center>
+<div id="posts">
+    {% for post in posts %}
+	
+	<div class="card border-secondary mb-3 post-object{{post.id}}">
+        <h5 class="card-header"><a href="{% url 'profile' post.user.username %}">{{post.user.username|capfirst}}</a></h5>
+        <div class="card-body text-secondary">
+            <h6 class="card-subtitle mb-2 text-muted">{{post.date}}</h6>
+            <p class="card-text" id="tweet{{post.id}}"> {{ post.text }}</p>
+			<form action="#" method="POST" id="form_edit{{post.id}}" data-id="{{post.id}}" style="display: none">
+                {% csrf_token %}
+                <div class="form-group">
+                    {{ edit_post.edit_text }}
+                </div>
+                <div id="post_alert{{post.id}}">
+                </div>
+                <div id="post_button">
+                <button type="button" data-id="{{post.id}}" id="close_btn{{post.id}}" class="btn btn-secondary"
+                    data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" id="btnSave">Save changes</button>
+                </div>
+            </form>	            
+			<p class="card-text">
+                <div data-id="{{post.id}}"
+                    class="card-link {% if post.current_like > 0 %} fas {%else%} far {% endif %} fa-heart">&nbsp<small
+                        class="text-muted">{{post.like_set.count}}</small>
+                </div>
+            </p>
+            		
+        </div>
+    </div>    
+    {% empty %}
+    <h2 class="update_info">No posts</h2>
+    {% endfor %}
+</div>
+{% endblock %}

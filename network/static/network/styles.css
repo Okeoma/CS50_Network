@@ -1,0 +1,57 @@
+body{
+    padding: 10px;
+	background-color:  #d3d3ab;
+}
+
+.wrapper{
+padding: 30px;
+width:70%;
+height:500px;
+margin: 50px;
+font-family: calibri;
+Background: #f2f2f2;
+
+}
+
+.fa-heart{
+    color: red !important;
+    cursor: pointer;
+}
+.btn-primary:hover{
+    color: #fff;
+    background-color: #c82333;
+    border-color: #bd2130;
+}
+.hide{
+    display:none;
+}
+.data-info{
+	color:red;
+}
+.all_posts, #profile_name{	
+	font-size:48px;
+}
+#no_profilename{
+	font-size:34px;
+}
+
+.all_posts, .profile_info, .title, .update_info{
+	color:#1a75ff;	
+}
+
+#profile_name, #no_profilename{	
+	color:#000066;
+	padding:50px;
+}
+
+ #update_picture{
+	color:#000066;
+ }
+
+@media only screen and (min-width: 600px){
+
+    .card{
+        width:auto; 
+        margin:6px;
+    }
+}

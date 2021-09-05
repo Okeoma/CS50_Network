@@ -1,0 +1,3 @@
+Django
+Django_heroku
+Pillow
