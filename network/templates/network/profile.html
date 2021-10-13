@@ -1,0 +1,128 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+<div class="card">
+    <div class="card-body">
+	    <div>		
+		    {%if user.is_authenticated and user.id != profile_account.id %}
+			    <img class="img-fluid" src="{{picture.image.url}}" alt="Profile Picture" style="max-height:100px">
+	            <strong class="card-title" id="profile_name">{{profile_account.first_name|capfirst}} {{profile_account.last_name|capfirst}}</strong>                				
+	        {% else %}
+			    <a href="{% url 'account_view' username=request.user %}" class="card-link btn btn-outline-network">
+                    <img class="img-fluid" src="{{picture.image.url}}" alt="Profile Picture" style="max-height:100px">	                
+	                <strong class="card-title" id="profile_name">{{profile_account.first_name|capfirst}} {{profile_account.last_name|capfirst}}</strong>
+				</a>
+				<button onclick="window.location.href='{% url 'account_view' username=request.user %}'"> Update your profile details</button>
+	        {% endif %}        		
+		    <object align="right" class="profile_info">
+			    <span class="btn-total-follow">Username: <strong>{{profile_account.username|capfirst}};</strong></span>
+			    <span class="btn-total-follow">Total post(s): <strong>{{post_count}}</strong> </span>
+			</object>
+		</div>
+        <hr />
+		<button type="button" class="btn-total-follow follows" data-toggle="modal" data-target="#following">{{following_count}} Following </button>
+        <button type="button" class="btn-total-follow follows" data-toggle="modal" data-target="#follower" >Followers</button>        
+        <strong><span id="followers">{{followers}}</span> Follower(s)</strong>
+        </p>
+		<hr />
+		<div class="modal fade" id="following" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title details-name" id="exampleModalLongTitle">Total Following: {{following_count}}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        {% for follow in following %}
+                            <p class="card-header"><a href="{% url 'profile' username=follow.following %}">{{follow.following|title}}</a></p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+		
+		<div class="modal fade" id="follower" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title details-name" id="exampleModalLongTitle">Total Followers: {{followers}}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        {% for follow in follower %}
+                            <p class="card-header"><a href="{% url 'profile' username=follow.follower %}">{{follow.follower|title}}</a></p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+		
+		
+        <p class="card-text"><small class="text-muted"></small></p>
+        {% if user.is_authenticated and user.id != profile_account.id %}
+            <p class="card-text">
+            {% if person_count > 0 %}
+                <button id="followering_btn" data-id="{{profile_account.id}}" type="button" class="btn btn-primary">Following</button>
+            {% else %}
+                <button id="followering_btn" data-id="{{profile_account.id}}" type="button" class="btn btn-outline-primary">Follow</button>
+            {%endif%}
+            </p>
+        {%endif%}
+    </div>
+</div>        
+
+<div id="content">
+    {% if user.is_authenticated and user.id != profile_account.id %}
+	    <h3>{{profile_account.username|capfirst}}'s Posts</h3>	    
+	{% else %}
+	    {% include "network/post_form.html" %}
+	    <h3>Here are your Personal Posts</h3>	
+	{%endif%}
+    {% for post in posts %}
+	
+	<div class="card border-secondary mb-3 post-object{{post.id}}">
+        <h5 class="card-header"><a href="{% url 'profile' post.user.username %}">{{post.user.username|capfirst}}</a>
+		    {% if post.user_id == user.id %}
+		        <object align="right"><a href="#" class="card-link" id="edit_link_{{post.id}}" data-id="{{post.id}}" data-toggle="modal">Edit</a></object>
+		    {% endif %}		
+		</h5>
+        <div class="card-body text-secondary">
+            <h6 class="card-subtitle mb-2 text-muted">{{post.date}}</h6>
+            <p class="card-text" id="tweet{{post.id}}"> {{ post.text }}</p>
+			<form action="#" method="POST" id="form_edit{{post.id}}" data-id="{{post.id}}" style="display: none">
+                {% csrf_token %}
+                <div class="form-group">
+                    {{ edit_post.edit_text }}
+                </div>
+                <div id="post_alert{{post.id}}">
+                </div>
+                <div id="post_button">
+                <button type="button" data-id="{{post.id}}" id="close_btn{{post.id}}" class="btn btn-secondary"
+                    data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" id="btnSave">Save changes</button>
+                </div>
+            </form>			
+            {%if post.user_id == user.id %}				
+				<form id="deletePost" data-post='{{post.id}}' action="{% url 'delete_post' post=post.id %}">
+                    {% csrf_token %}                            
+                    <button class="btn btn-outline-dark" type="submit" onClick="window.location.reload();" >Delete</button>
+                </form>
+		    {% else %}
+			    <p class="card-text">
+                    <div data-id="{{post.id}}"
+                        class="card-link {% if post.current_like > 0 %} fas {%else%} far {% endif %} fa-heart">&nbsp<small
+                            class="text-muted">{{post.like_set.count}}</small>
+                    </div>
+                </p>
+            {% endif %}			
+        </div>
+    </div>     
+    {% empty %}
+    <h2 class="update_info">No posts</h2>
+    {% endfor %}
+</div>
+{% endblock %}

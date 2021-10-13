@@ -1,0 +1,42 @@
+{% if user.is_authenticated %}
+
+    {% if request.user.first_name == "" %}
+    <div class="card">
+        <div class="card-body">	               
+            <img class="img-fluid" src="{{picture.image.url}}" alt="Profile Picture" style="max-height:100px">            
+		    <strong id="no_profilename">You have not updated your name or profile image</strong>			
+		    <object align="right" class="profile_info"> 
+		        <span class="btn-total-follow"><strong>Email Address: {{user.email}}</strong> </span>			
+		    </object>
+        </div>
+    </div>
+    {% else %}
+	<div class="card">
+        <div class="card-body">
+            <a href="{% url 'profile' user.username %}" class="card-link btn btn-outline-network">
+                <img class="img-fluid" src="{{picture.image.url}}" alt="Profile Picture" style="max-height:100px">            
+		        <strong id="profile_name">{{user.first_name|capfirst}} {{user.last_name|capfirst}}</strong>
+			</a> 
+		    <object align="right" class="profile_info"> 
+		        <span class="btn-total-follow"><strong>Email Address: {{user.email}}</strong> </span>			
+		    </object>
+        </div>
+    </div>
+    {% endif%}
+	
+{% else %}
+	<div class="card">
+        <div class="card-body">	               
+            <img class="img-fluid" src="{{picture.image.url}}" alt="Profile Picture" style="max-height:100px">            
+		    <strong id="no_profilename">Welcome to Social Media Site</strong>
+		    <object align="right" class="profile_info"> 
+		        <span>
+				    <strong><a class="nav-link" href="{% url 'login' %}">Log In</a><strong>				
+				    
+				    <strong><a class="nav-link" href="{% url 'register' %}">Register</a></strong> 
+				
+				</span> 			
+		    </object>
+        </div>
+    </div>
+{% endif%}
