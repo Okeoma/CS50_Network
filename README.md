@@ -32,18 +32,7 @@ Using Python, JavaScript, HTML, and CSS, complete the implementation of a social
 
 :computer: &nbsp; **View Course [here](https://www.edx.org/course/cs50s-web-programming-with-python-and-javascript)**
 
-:arrow_forward: &nbsp; **View Live Demo [here](https://www.youtube.com/watch?v=4H7dKx5h3Bo)**
+:arrow_forward: &nbsp; **View Live Demo [here](https://youtu.be/p8vP67GqVbk)**
 
 &nbsp;
 
-### Contribute
-
-Contributions are always welcome! Please create a PR to contribute.
-
-### :pencil: &nbsp; License
-
-This project is licensed under [MIT](https://opensource.org/licenses/MIT) license.
-
-### :man_astronaut: &nbsp; Show your support
-
-Give a ⭐️ if this project helped you!
