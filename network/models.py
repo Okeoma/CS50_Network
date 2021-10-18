@@ -16,7 +16,7 @@ class Post(models.Model):
 
 class Picture(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='imageprofile')
-    image = models.ImageField(upload_to='images', blank=True, null=True)
+    image = models.ImageField(upload_to='images', null=True)
 	
     def __str__(self):
         return f"{self.id}: {self.user}"	

@@ -13,15 +13,12 @@
 
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="{% url 'index' %}"><b style="font-size:30px;">Network</b></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        
+            <a class="navbar-brand" href="{% url 'index' %}"><b style="font-size1:30px;">Network</b></a>            
+            <div>
 	            {% with request.resolver_match.url_name as url_name %}
-                    <ul class="navbar-nav">
+                    <ul class="navbar-nav mr-auto">
 	                    {% if user.is_authenticated %}
                             <li class="nav-item {% if url_name == 'profile' %}active{% endif %}" >
                                 <a class="nav-link active" aria-current="page" href="{% url 'profile' user.username %}"><strong>{{ user.username|capfirst }}</strong></a>
@@ -31,7 +28,7 @@
                             <a class="nav-link" href="{% url 'index' %}">All Posts</a>
                         </li>
 		                {% if user.is_authenticated %}   
-                            <li class="nav-item{% if url_name == 'following' %}active{% endif %}">
+                            <li class="nav-item {% if url_name == 'following' %}active{% endif %}">
                                 <a class="nav-link" href="{% url 'following' %}">Following</a>
                             </li>
 			                <li class="nav-item {% if url_name == 'logout' %}active{% endif %}">
@@ -48,8 +45,8 @@
                     </ul>
 	            {% endwith %}
             </div>
-        </div>    
-    </nav>	 
+           
+        </nav>	 
 
     <div class="body">
         {% block body %}
